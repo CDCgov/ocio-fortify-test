@@ -53,9 +53,9 @@ jobs:
       with:
         workflow: 'fortify-scan-pull-request.yml'
         repo: cdcent/ocio-fortify
+        ref: acccd0f3a35630f8d171ab959b2a4ed4a06bd768
         token: ${{ env.access_token }}
         inputs: '{ "pathsToScan": ${{ steps.get-dirs-to-scan.outputs.dirs }}, "repositoryToScan": "${{ github.repository }}", "prToScan": "${{ github.head_ref || github.ref_name }}" }'
-        ref: 'edso-525/fortify-pr-scan-workflow' #TODO clean this up before merging
         wait-for-completion: true
         wait-for-completion-timeout: 120m
         wait-for-completion-interval: 300s
