@@ -25,19 +25,19 @@ jobs:
     environment: dev
     runs-on: ubuntu-latest
     steps:
+      
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-      - name: Generate Fortify Github App Token
-        uses: actions/create-github-app-token@v1
-        id: github-app-token
-        with:
-          app-id: '926437' #TODO probably doesn't need to be hardcoded, but this the the ID for fortify PR app
-          private-key: ${{ secrets.FORTIFY_SCANNER_PRIVATE_KEY }}
-          owner: 'cdcent'
-          repositories: 'ocio-fortify' #TODO uncomment before merging ${{ inputs.repositoryToScan }}
-
+    - name: Generate Fortify Github App Token
+      uses: actions/create-github-app-token@v1
+      id: github-app-token
+      with:
+        app-id: '926437' #TODO probably doesn't need to be hardcoded, but this the the ID for fortify PR app
+        private-key: ${{ secrets.FORTIFY_SCANNER_PRIVATE_KEY }}
+        owner: 'cdcent'
+        repositories: 'ocio-fortify' #TODO uncomment before merging ${{ inputs.repositoryToScan }}
                     
     - name: List unique top-level directories of changed files
       id: get-dirs-to-scan
