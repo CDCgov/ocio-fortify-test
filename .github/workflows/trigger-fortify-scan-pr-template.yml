@@ -29,17 +29,15 @@ jobs:
       with:
         fetch-depth: 0
 
-    #future TODO: this can probably be improved or done better
-    - name: Gen GitHub App Access Token For Manual Trigger
-      id: github-app-token
-      run: |
-        pwd; ls -la; git clone https://github.com/kave/github-app-token.git
-        pwd; ls -la; cd github-app-token
-        pwd; ls -la; sudo gem install jwt
-        pwd; ls -la; echo "${{ secrets.FORTIFY_SCANNER_PRIVATE_KEY }}" > app-private-key.pem
-        pwd; ls -la; chmod +x ./get-github-app-access-token.sh;
-        pwd; ls -la; . ./get-github-app-access-token.sh;
-        pwd; ls -la; echo "access_token=${TOKEN}" >> "$GITHUB_ENV"
+      - name: Generate Fortify Github App Token
+        uses: actions/create-github-app-token@v1
+        id: github-app-token
+        with:
+          app-id: '926437' #TODO probably doesn't need to be hardcoded, but this the the ID for fortify PR app
+          private-key: ${{ secrets.FORTIFY_SCANNER_PRIVATE_KEY }}
+          owner: 'cdcent'
+          repositories: 'ocio-fortify' #TODO uncomment before merging ${{ inputs.repositoryToScan }}
+
                     
     - name: List unique top-level directories of changed files
       id: get-dirs-to-scan
@@ -53,7 +51,7 @@ jobs:
       with:
         workflow: 'Fortify Scan on Pull Request'
         repo: cdcent/ocio-fortify
-        token: ${{ env.access_token }}
+        token: ${{ steps.github-app-token.outputs.token }}
         inputs: '{ "pathsToScan": ${{ steps.get-dirs-to-scan.outputs.dirs }}, "repositoryToScan": "${{ github.repository }}", "prToScan": "${{ github.head_ref || github.ref_name }}" }'
         wait-for-completion: true
         wait-for-completion-timeout: 120m
