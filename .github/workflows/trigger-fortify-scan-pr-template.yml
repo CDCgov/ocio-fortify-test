@@ -53,7 +53,6 @@ jobs:
       with:
         workflow: 'Fortify Scan on Pull Request'
         repo: cdcent/ocio-fortify
-        ref: acccd0f3a35630f8d171ab959b2a4ed4a06bd768
         token: ${{ env.access_token }}
         inputs: '{ "pathsToScan": ${{ steps.get-dirs-to-scan.outputs.dirs }}, "repositoryToScan": "${{ github.repository }}", "prToScan": "${{ github.head_ref || github.ref_name }}" }'
         wait-for-completion: true
