@@ -51,7 +51,7 @@ jobs:
       id: manual-devops-workflow-dispatch
       uses: the-actions-org/workflow-dispatch@v4
       with:
-        workflow: 'fortify-scan-pull-request.yml'
+        workflow: 'Fortify Scan on Pull Request'
         repo: cdcent/ocio-fortify
         ref: acccd0f3a35630f8d171ab959b2a4ed4a06bd768
         token: ${{ env.access_token }}
