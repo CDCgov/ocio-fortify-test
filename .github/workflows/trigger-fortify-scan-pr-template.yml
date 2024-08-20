@@ -44,7 +44,7 @@ jobs:
     - name: List unique top-level directories of changed files
       id: get-dirs-to-scan
       run: |
-        unique_paths=$(python3 tools/codeScan/gitDiffAnalysis.py '${{ env.nestedFolders }}')
+        pwd; ls -la; unique_paths=$(python3 tools/git_diff_analysis.py '${{ env.nestedFolders }}')
         echo "dirs=$unique_paths" >> $GITHUB_OUTPUT
 
     - name: Dispatch Remote Code Scan Event 
