@@ -36,7 +36,7 @@ jobs:
         pwd; ls -la; git clone https://github.com/kave/github-app-token.git
         pwd; ls -la; cd github-app-token
         pwd; ls -la; sudo gem install jwt
-        pwd; ls -la; echo "${{ secrets.CDC_COE_BOTFREY_PEM }}" > app-private-key.pem
+        pwd; ls -la; echo "${{ secrets.FORTIFY_SCANNER_PRIVATE_KEY }}" > app-private-key.pem
         pwd; ls -la; chmod +x ./get-github-app-access-token.sh;
         pwd; ls -la; . ./get-github-app-access-token.sh;
         pwd; ls -la; echo "access_token=${TOKEN}" >> "$GITHUB_ENV"
