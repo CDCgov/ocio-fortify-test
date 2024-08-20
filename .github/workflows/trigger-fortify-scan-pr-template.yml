@@ -49,7 +49,7 @@ jobs:
 
     - name: Dispatch Remote Code Scan Event 
       id: manual-devops-workflow-dispatch
-      uses: aurelien-baudet/workflow-dispatch@v2
+      uses: the-actions-org/workflow-dispatch@v4
       with:
         workflow: 'fortify-scan-pull-request.yml'
         repo: cdcent/ocio-fortify
