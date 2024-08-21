@@ -37,8 +37,7 @@ jobs:
         app-id: '926437' #TODO probably doesn't need to be hardcoded, but this the the ID for fortify PR app
         private-key: ${{ secrets.FORTIFY_SCANNER_PRIVATE_KEY }}
         owner: 'cdcent' 
-        repositories: 'ocio-fortify'
-        
+        repositories: 'ocio-fortify'        
                     
     - name: List Unique Top-Level Directories of Changed Files
       id: get-dirs-to-scan
@@ -46,11 +45,7 @@ jobs:
         export DIRS_TO_SCAN=$(find . -type d -not -name . -not -path "./.git*" -not -empty | tr '\n' ' ' | sed 's/ $//g' )
         echo "found $DIRS_TO_SCAN"        
         echo "dirs=$DIRS_TO_SCAN" >> $GITHUB_OUTPUT
-
-    - name: Debugging some stuff
-      run: |
-        pwd; ls; echo "${{ github.event.number }}"; echo "${{ github.head_ref }}"; echo "${{ github.ref }}"; echo "${{ github.ref_name }}"; echo "${{ github.sha }}"; 
-        
+      
     - name: Dispatch Remote Code Scan Event 
       id: manual-devops-workflow-dispatch
       uses: the-actions-org/workflow-dispatch@v4
@@ -61,6 +56,6 @@ jobs:
         token: ${{ steps.github-app-token.outputs.token }}
         inputs: '{ "pathsToScan": "${{ steps.get-dirs-to-scan.outputs.dirs }}", "repositoryToScan": "${{ github.repository }}", "prToScan": "${{ github.event.number }}", "commitToScan": "${{ github.sha }}" }'
         wait-for-completion: true
-        wait-for-completion-timeout: 120m
-        wait-for-completion-interval: 300s
+        wait-for-completion-timeout: 10m
+        wait-for-completion-interval: 60s
         display-workflow-run-url: true  
