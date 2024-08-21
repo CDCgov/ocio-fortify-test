@@ -47,7 +47,6 @@ jobs:
 
     - name: Debugging some stuff
       run: |
-
         pwd; ls; echo "${{ github.event.number }}"; echo "${{ github.head_ref }}"; echo "${{ github.ref }}"; echo "${{ github.ref_name }}"; echo "${{ github.sha }}"; 
         
     - name: Dispatch Remote Code Scan Event 
