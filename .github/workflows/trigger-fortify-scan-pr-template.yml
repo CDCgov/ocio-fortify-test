@@ -37,7 +37,8 @@ jobs:
         app-id: '926437' #TODO probably doesn't need to be hardcoded, but this the the ID for fortify PR app
         private-key: ${{ secrets.FORTIFY_SCANNER_PRIVATE_KEY }}
         owner: 'cdcent' 
-        repositories: 'ocio-fortify'        
+        repositories: 'ocio-fortify'
+        
                     
     - name: List Unique Top-Level Directories of Changed Files
       id: get-dirs-to-scan
