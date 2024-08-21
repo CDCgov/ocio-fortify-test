@@ -38,7 +38,6 @@ jobs:
         private-key: ${{ secrets.FORTIFY_SCANNER_PRIVATE_KEY }}
         owner: 'cdcent' 
         repositories: 'ocio-fortify'
-        
                     
     - name: List Unique Top-Level Directories of Changed Files
       id: get-dirs-to-scan
