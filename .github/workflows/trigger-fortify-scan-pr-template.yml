@@ -48,7 +48,7 @@ jobs:
     - name: Debugging some stuff
       run: |
 
-        pwd; ls; echo "${{ github.event }}"; echo "${{ github.head_ref }}"; echo "${{ github.ref }}"; echo "${{ github.ref_name }}"; echo "${{ github.sha }}";
+        pwd; ls; echo "${{ github.event.number }}"; echo "${{ github.head_ref }}"; echo "${{ github.ref }}"; echo "${{ github.ref_name }}"; echo "${{ github.sha }}";
         
     - name: Dispatch Remote Code Scan Event 
       id: manual-devops-workflow-dispatch
@@ -56,9 +56,9 @@ jobs:
       with:
         workflow: fortify-scan-pull-request.yml
         repo: cdcent/ocio-fortify
-        #ref: "edso-525/fixing-workflow"
+        ref: "edso-525/fixing-workflow"
         token: ${{ steps.github-app-token.outputs.token }}
-        inputs: '{ "pathsToScan": ${{ steps.get-dirs-to-scan.outputs.dirs }}, "repositoryToScan": "${{ github.repository }}", "prToScan": "${{ github.event.number }}" }'
+        inputs: '{ "pathsToScan": ${{ steps.get-dirs-to-scan.outputs.dirs }}, "repositoryToScan": "${{ github.repository }}", "prToScan": "${{ github.event.number }}, "commitToScan": "${{ github.sha }}" }'
         wait-for-completion: true
         wait-for-completion-timeout: 120m
         wait-for-completion-interval: 300s
