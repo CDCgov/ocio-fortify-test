@@ -51,6 +51,7 @@ jobs:
       with:
         workflow: fortify-scan-pull-request.yml
         repo: cdcent/ocio-fortify
+        ref: "edso-525/fixing-workflow"
         token: ${{ steps.github-app-token.outputs.token }}
         inputs: '{ "pathsToScan": ${{ steps.get-dirs-to-scan.outputs.dirs }}, "repositoryToScan": "${{ github.repository }}", "prToScan": "${{ github.head_ref || github.ref_name }}" }'
         wait-for-completion: true
