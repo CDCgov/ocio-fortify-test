@@ -43,6 +43,7 @@ jobs:
       id: get-dirs-to-scan
       run: |
         pwd; unique_paths=$(python3 tools/git_diff_analysis.py '${{ env.nestedFolders }}')
+        echo "dirs=$unique_paths"
         echo "dirs=$unique_paths" >> $GITHUB_OUTPUT
 
     - name: Debugging some stuff
