@@ -30,26 +30,26 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Generate Fortify Github App Token
+    - name: Generate Fortify Github App Token For CDCEnt Integration
       uses: actions/create-github-app-token@v1
       id: github-app-token
       with:
         app-id: '926437' #TODO probably doesn't need to be hardcoded, but this the the ID for fortify PR app
         private-key: ${{ secrets.FORTIFY_SCANNER_PRIVATE_KEY }}
-        owner: 'cdcent'
-        repositories: 'ocio-fortify' #TODO uncomment before merging ${{ inputs.repositoryToScan }}
+        owner: 'cdcent' 
+        repositories: 'ocio-fortify' 
                     
-    - name: List unique top-level directories of changed files
+    - name: List Unique Top-Level Directories of Changed Files
       id: get-dirs-to-scan
       run: |
-        pwd; ls -la; unique_paths=$(python3 tools/git_diff_analysis.py '${{ env.nestedFolders }}')
+        pwd; unique_paths=$(python3 tools/git_diff_analysis.py '${{ env.nestedFolders }}')
         echo "dirs=$unique_paths" >> $GITHUB_OUTPUT
 
     - name: Dispatch Remote Code Scan Event 
       id: manual-devops-workflow-dispatch
       uses: the-actions-org/workflow-dispatch@v4
       with:
-        workflow: 'Fortify Scan on Pull Request'
+        workflow: fortify-scan-pull-request.yml
         repo: cdcent/ocio-fortify
         token: ${{ steps.github-app-token.outputs.token }}
         inputs: '{ "pathsToScan": ${{ steps.get-dirs-to-scan.outputs.dirs }}, "repositoryToScan": "${{ github.repository }}", "prToScan": "${{ github.head_ref || github.ref_name }}" }'
