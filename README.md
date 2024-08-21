@@ -39,29 +39,65 @@ TODO better documentation
 Fortify scanning comes with a unique Fortify App Version ID. Steven
 can probably explain it better than me; but you will need this.
 
+Without the fortify app version ID, you will be able to successfully
+scan for vulnerabilities, but you will have to check the linked
+workflow 's output in order to find what the vulnerabilities found actually are. 
+
 ## Instructions on How to Integrate Your Repository With Fortify PR Scanning
 
 ### Check the Github Application Integration
 
 Be sure you can see `fortify-pr-scan` in your repository's Installed Apps.
 
+You will need to give it the following permissions in order for the Pull Request comment to work:
+```
+- Actions
+  read & write
+- Pull Requests
+  read & write
+- Contents
+  read
+```
+
+As of the time of this writing, these should be the default
+permissions for new repositories in CDCGov. If you are having a "Not
+Found" error when trying to "list workflows" on the CDCEnt side, it is
+probably the application permissions not being correct.
+
 ### Add the fortify-pr-scan Private Key to Your Repository
 
 You'll need this; find it from TODO upload it to where?
 
-### Set up Pull Request Merge Protections
+The `fortify-pr-scan` private key needs to be set up as a Github
+Action secret in your repository in order for the integration to
+sucessfully work. Save the key in your secrets with the name
+`FORTIFY_SCANNER_PRIVATE_KEY`.
+
+### Set up Pull Request Branch Protections
 
 The whole point of the scan is that it won't let you merge failing
 code right? You'll need to set up your repository to not allow merging
 of PRs until all PR checks are enabled, and you get a review approval.
 
+In the settings of your new repository, navigate to "Branches" under
+Code and automation. For your 'main' branch (and any others you care
+to branch-protect, like 'develop'), be sure that "Require a pull
+request before merging" and "Require approvals" are selected. Also,
+select "Require status checks to pass before merging" and "Require
+branches to be up to date before merging" as well.
+
+
 ### Copy the trigger-fortify-scan-pr-template.yml Workflow to Your Repository
 
-TODO here are the parts you need to fill out:
- inputs
- etc
- go
- here
+Copy the `trigger-fortify-scan-pr-template.yml` file found in this
+repository to your repository, saved in the `.github/workflows/`
+directory. 
+
+Modify the following to suit your needs:
+```
+pull_request: 
+	- branch: modify the branches that will trigger automatic code scanning, when a new Pull Request is opened against it. defaults to "main".
+```
 
 ## Further Notes
  - [https://github.com/cdcent/ocio-containers/tree/main/openshift-runners/fortify-sca](https://github.com/cdcent/ocio-containers/tree/main/openshift-runners/fortify-sca)
