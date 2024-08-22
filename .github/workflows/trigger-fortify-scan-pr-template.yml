@@ -1,0 +1,62 @@
+# Fortify Scan On Pull Request Template
+#
+# This workflow exists as a template to be copied to your CDCGov repository, to integrate automated Fortify Scanning on Pull Requests.
+# It may be necessary to modify this template to suit your specific respository's needs.
+# This template repository scans a trivial python hello-world application as a reference example.
+# Please see the documentation at https://github.com/cdcent/ocio-fortify for more info
+
+name: Trigger Fortify Code Scan On Pull Request Workflow
+
+defaults:
+  run:
+    shell: bash
+
+on:
+  pull_request: 
+    types: [opened, reopened, synchronize]
+    branches: [main] # may be changed to 'develop' or similar as necessary
+
+permissions:
+  contents: read
+  pull-requests: write # required for `comment-summary-in-pr`
+      
+jobs:
+  invoke-manual-code-scan:
+    environment: dev
+    runs-on: ubuntu-latest
+    steps:
+      
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Generate Fortify Github App Token For CDCEnt Integration
+      uses: actions/create-github-app-token@v1
+      id: github-app-token
+      with:
+        app-id: '926437' #TODO probably doesn't need to be hardcoded, but this the the ID for fortify PR app
+        private-key: ${{ secrets.FORTIFY_SCANNER_PRIVATE_KEY }}
+        owner: 'cdcent' 
+        repositories: 'ocio-fortify'
+                    
+    - name: List Unique Top-Level Directories of Changed Files
+      id: get-dirs-to-scan
+      run: |
+        #TODO: incorporate script to detect fortify version with app name
+        export DIRS_TO_SCAN=$(git diff --name-only origin/main...HEAD | grep  "/" | cut -d '/' -f 1 | sed 's;$;/;g' | grep -v -e ".git" -e ".github")
+        echo "found $DIRS_TO_SCAN"        
+        echo "dirs=$DIRS_TO_SCAN" >> $GITHUB_OUTPUT
+      
+    - name: Dispatch Remote Code Scan Event 
+      id: manual-devops-workflow-dispatch
+      uses: the-actions-org/workflow-dispatch@v4
+      with:
+        workflow: fortify-scan-pull-request.yml
+        repo: cdcent/ocio-fortify
+        ref: 'main'
+        token: ${{ steps.github-app-token.outputs.token }}
+        inputs: '{ "pathsToScan": "${{ steps.get-dirs-to-scan.outputs.dirs }}", "repositoryToScan": "${{ github.repository }}", "prToScan": "${{ github.event.number }}", "commitToScan": "${{ github.sha }}" }'
+        wait-for-completion: true
+        wait-for-completion-timeout: 10m
+        wait-for-completion-interval: 60s
+        display-workflow-run-url: true  
