@@ -53,6 +53,7 @@ jobs:
       with:
         workflow: fortify-scan-pull-request.yml
         repo: cdcent/ocio-fortify
+        ref: 'main'
         token: ${{ steps.github-app-token.outputs.token }}
         inputs: '{ "pathsToScan": "${{ steps.get-dirs-to-scan.outputs.dirs }}", "repositoryToScan": "${{ github.repository }}", "prToScan": "${{ github.event.number }}", "commitToScan": "${{ github.sha }}" }'
         wait-for-completion: true
