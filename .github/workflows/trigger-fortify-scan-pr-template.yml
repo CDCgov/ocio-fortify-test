@@ -43,7 +43,6 @@ jobs:
       id: get-dirs-to-scan
       run: |
         #TODO: incorporate script to detect fortify version with app name
-        #export DIRS_TO_SCAN=$(find . -type d -not -name . -not -path "./.git*" -not -empty | tr '\n' ' ' | sed 's/ $//g' )
         export DIRS_TO_SCAN=$(git diff --name-only origin/main...HEAD | grep  "/" | cut -d '/' -f 1 | sed 's;$;/;g' | grep -v -e ".git" -e ".github")
         echo "found $DIRS_TO_SCAN"        
         echo "dirs=$DIRS_TO_SCAN" >> $GITHUB_OUTPUT
@@ -54,7 +53,6 @@ jobs:
       with:
         workflow: fortify-scan-pull-request.yml
         repo: cdcent/ocio-fortify
-        ref: "edso-525/fixing-workflow" #TODO remove after merging this branch
         token: ${{ steps.github-app-token.outputs.token }}
         inputs: '{ "pathsToScan": "${{ steps.get-dirs-to-scan.outputs.dirs }}", "repositoryToScan": "${{ github.repository }}", "prToScan": "${{ github.event.number }}", "commitToScan": "${{ github.sha }}" }'
         wait-for-completion: true
