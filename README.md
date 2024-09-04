@@ -117,8 +117,9 @@ probably the application permissions not being correct.
 
 ### Add the fortify-pr-scan Private Key to Your Repository
 
-Navigate to the `tf-ede-envar-vault` and obtain the secret stored as
-`FORTIFY-PR-SCAN-PRIVATE-KEY`.
+Navigate to the `edso-keyvault` and obtain the secret stored as
+`FORTIFY-PR-SCAN-PRIVATE-KEY`. The keyvault is in the
+`ocio-edso-dev-moderate-rg` resource group.
 
 The `fortify-pr-scan` private key needs to be set up as a Github
 Action secret in your repository in order for the integration to
