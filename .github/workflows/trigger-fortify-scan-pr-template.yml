@@ -43,10 +43,10 @@ jobs:
       id: get-dirs-to-scan
       run: |
         #TODO: incorporate script to detect fortify version with app name
-        export json_dirs_with_version=$(git_dirs=$(git diff origin/main...HEAD --name-status --raw | tr '\t' ' ' | grep -v "^D" | cut -d " " -f 2 | sed 's;^;./;g' | rev | cut -d "/" -f 2- | rev); for dir in $git_dirs; do version=$(find $dir -maxdepth 1 -type f -name "*fortify.version" -exec cat {} 2>/dev/null \;); echo "{\"dir\":\"$dir\",\"version\":\"$version\"}" | jq -r; done )
+        export json_dirs_with_version=$(git_dirs=$(git diff origin/main...HEAD --name-status --raw | tr '\t' ' ' | grep -v "^D" | cut -d " " -f 2 | sed 's;^;./;g' | rev | cut -d "/" -f 2- | rev); for dir in $git_dirs; do version=$(find $dir -maxdepth 1 -type f -name "*fortify.version" -exec cat {} 2>/dev/null \;); echo "{\"dir\":\"$dir\",\"version\":\"$version\"}" | jq -r; done | jq -s )
 
         echo "found $json_dirs_with_version" 
-        echo "json_dirs=$json_dirs_with_version" >> $GITHUB_OUTPUT
+        echo 'json_dirs="${json_dirs_with_version}"' >> $GITHUB_OUTPUT
 
         #export DIRS_TO_SCAN=$(git diff --name-only origin/main...HEAD | grep  "/" | cut -d '/' -f 1 | sed 's;$;/;g' | grep -v -e ".git" -e ".github")
         #echo "dirs=$DIRS_TO_SCAN" >> $GITHUB_OUTPUT
