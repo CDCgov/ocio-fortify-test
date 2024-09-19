@@ -43,7 +43,7 @@ jobs:
       id: get-dirs-to-scan
       run: |
         #TODO: incorporate script to detect fortify version with app name
-        eport json_dirs_with_version=$(
+        export json_dirs_with_version=$(
         git_dirs=$(git diff origin/main...HEAD --name-status --raw | tr '\t' ' ' | grep -v "^D" | cut -d " " -f 2 | sed 's;^;./;g' | rev | cut -d "/" -f 2- | rev);
         for dir in $git_dirs;
         do
