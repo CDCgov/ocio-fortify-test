@@ -47,9 +47,9 @@ jobs:
 
         echo "found $json_dirs_with_version"
         
-        echo "json_dirs<<EOF" >> ${GITHUB_OUTPUT}
+        echo 'json_dirs<<EOF' >> ${GITHUB_OUTPUT}
         echo "${json_dirs_with_version}" >> ${GITHUB_OUTPUT}
-        echo "EOF" >> ${GITHUB_OUTPUT}
+        echo 'EOF' >> ${GITHUB_OUTPUT}
 
         #export DIRS_TO_SCAN=$(git diff --name-only origin/main...HEAD | grep  "/" | cut -d '/' -f 1 | sed 's;$;/;g' | grep -v -e ".git" -e ".github")
         #echo "dirs=$DIRS_TO_SCAN" >> $GITHUB_OUTPUT
