@@ -44,7 +44,7 @@ jobs:
       run: |
         #TODO: incorporate script to detect fortify version with app name
         eport json_dirs_with_version=$(
-        git_dirs=$(git diff develop --name-status --raw | tr '\t' ' ' | grep -v "^D" | cut -d " " -f 2 | sed 's;^;./;g' | rev | cut -d "/" -f 2- | rev);
+        git_dirs=$(git diff main --name-status --raw | tr '\t' ' ' | grep -v "^D" | cut -d " " -f 2 | sed 's;^;./;g' | rev | cut -d "/" -f 2- | rev);
         for dir in $git_dirs;
         do
         version=$(find $dir -maxdepth 1 -type f -name "*fortify.version" -exec cat {} \;);
