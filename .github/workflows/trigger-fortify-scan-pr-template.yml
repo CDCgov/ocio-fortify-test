@@ -59,7 +59,7 @@ jobs:
         repo: cdcent/ocio-fortify
         ref: 'main'
         token: ${{ steps.github-app-token.outputs.token }}
-        inputs: '{ "pathsToScan": "fromJSON(${{ steps.get-dirs-to-scan.outputs.json_dirs }})", "repositoryToScan": "${{ github.repository }}", "prToScan": "${{ github.event.number }}", "commitToScan": "${{ github.sha }}" }'
+        inputs: '{ "pathsToScan": "${{ fromJSON(steps.get-dirs-to-scan.outputs.json_dirs) }}", "repositoryToScan": "${{ github.repository }}", "prToScan": "${{ github.event.number }}", "commitToScan": "${{ github.sha }}" }'
         wait-for-completion: true
         wait-for-completion-timeout: 10m
         wait-for-completion-interval: 60s
